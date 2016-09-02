@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_events"
+            android:icon="@drawable/calendar"
+            android:title="活動" />
+        <item
+            android:id="@+id/nav_createEvent"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="創建活動" />
+
+    </group>
+
+    <item android:title="用戶設定">
+        <menu>
+            <item
+                android:id="@+id/nav_login"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="登入" />
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="查看已參加活動" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="更改資料" />
+
+        </menu>
+    </item>
+
+</menu>
