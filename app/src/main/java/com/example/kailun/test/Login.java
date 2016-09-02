@@ -84,7 +84,7 @@ public class Login extends Fragment implements View.OnClickListener{
 
     }
     public void register(){
-        //testing github commit
+        //testing gihub commit
     }
     public void showToast(String message){
         Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
