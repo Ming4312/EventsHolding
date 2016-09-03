@@ -3,7 +3,7 @@
 buildscript {
     repositories {
         jcenter()
-        //testing for push by kit
+        //testing for push by kit v1
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.0'
