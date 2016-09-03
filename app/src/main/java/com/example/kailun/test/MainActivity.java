@@ -1,5 +1,8 @@
 package com.example.kailun.test;
 
+import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,16 +23,21 @@ import com.firebase.client.Firebase;
 
 import junit.framework.Test;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static int REGISTER_REQUEST_CODE = 1;
+    public final  static String APP_STATUS="App Status";
+    public static MainActivity _this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        _this = this;
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -50,6 +58,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        /*SharedPreferences preferences = getSharedPreferences(APP_STATUS,MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove("firstTime");
+        editor.commit();*/
+        firstRun();
     }
 
     @Override
@@ -112,5 +126,51 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //When signed up
+        if(requestCode == REGISTER_REQUEST_CODE){
+            if(resultCode == RESULT_OK){
+                setFirstTime();
+                goToLogin();
+
+            }
+        }
+
+    }
+    public void firstRun(){
+        SharedPreferences preferences = getSharedPreferences(APP_STATUS,MODE_PRIVATE);
+        Boolean isFirstTime = preferences.getBoolean("firstTime",true);
+        if(isFirstTime){
+            Intent intent = new Intent(this,RegisterActivity.class);
+            startActivityForResult(intent,REGISTER_REQUEST_CODE);
+        }else{
+            setNavHeaderText();
+        }
+    }
+    public void setFirstTime(){
+        //set boolean that the register form will not show on next time
+        SharedPreferences preferences = getSharedPreferences(APP_STATUS,MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("firstTime",false);
+        editor.commit();
+    }
+    public void goToLogin(){
+        //after sign up, go to login page
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = new Login();
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commitAllowingStateLoss();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+    }
+    public void setNavHeaderText(){
+        //if logged in, change the header text to user email
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View header=navigationView.getHeaderView(0);
+        TextView email = (TextView)header.findViewById(R.id.tv_logged_in_email);
+        email.setText(SaveSharedPreference.getUserName(MainActivity.this));
     }
 }

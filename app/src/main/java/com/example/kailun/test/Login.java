@@ -2,6 +2,7 @@ package com.example.kailun.test;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -35,9 +36,9 @@ public class Login extends Fragment implements View.OnClickListener{
     EditText editEmail;
     EditText editPassword;
     Button btnLogin;
-    Button btnRegister;
     Firebase myFirebaseRef;
     private static final String FIREBASE_URL = "https://radiant-inferno-4091.firebaseio.com";
+    private static final String SERVER_URL = "pvblsharing.net16.net";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -49,14 +50,14 @@ public class Login extends Fragment implements View.OnClickListener{
         editEmail = (EditText) view.findViewById(R.id.email_edtext);
         editPassword = (EditText)view.findViewById(R.id.password_edtext);
         btnLogin = (Button)view.findViewById(R.id.login_btn);
-        btnRegister = (Button)view.findViewById(R.id.register_btn);
+
         btnLogin.setOnClickListener(this);
-        btnRegister.setOnClickListener(this);
+
 
         return view;
     }
     public void login(){
-        String email = editEmail.getText().toString();
+        final String email = editEmail.getText().toString();
         String password = editPassword.getText().toString();
 
         myFirebaseRef.authWithPassword(email,password, new Firebase.AuthResultHandler(){
@@ -71,6 +72,7 @@ public class Login extends Fragment implements View.OnClickListener{
 
                 }
                 myFirebaseRef.child("users").child(authData.getUid()).setValue(map);
+                keepLogin(email);
             }
 
             @Override
@@ -114,12 +116,13 @@ public class Login extends Fragment implements View.OnClickListener{
     public void showToast(String message){
         Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
     }
-
+    public void keepLogin(String username){
+        SaveSharedPreference.setUserName(MainActivity._this,username);
+    }
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.login_btn)
             login();
-        else if(v.getId() == R.id.register_btn)
-            register();
     }
+
 }
