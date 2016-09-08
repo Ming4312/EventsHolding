@@ -1,7 +1,7 @@
 # EventsHolding
 function needs:
 - login
-  - login by email (done)
+  - login by edEmail (done)
   - disable button when logged in
   - change navigation header text
 - register

@@ -59,10 +59,11 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        /*SharedPreferences preferences = getSharedPreferences(APP_STATUS,MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(APP_STATUS,MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove("firstTime");
-        editor.commit();*/
+        editor.commit();
+
         firstRun();
     }
 
